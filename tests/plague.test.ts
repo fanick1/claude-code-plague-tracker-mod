@@ -161,7 +161,7 @@ describe('/plague-tracker', () => {
     }
 
     const before = calls.fetched.length
-    await clock.advance(5 * 60_000)
+    await clock.advance(30 * 60_000)
     expect(calls.fetched.length).toBe(before + 1)
 
     await run($, 'off')
@@ -171,7 +171,7 @@ describe('/plague-tracker', () => {
     expect(await band.find({ text: /Plague threat/ })).toBeUndefined()
 
     const after = calls.fetched.length
-    await clock.advance(15 * 60_000)
+    await clock.advance(60 * 60_000)
     expect(calls.fetched.length).toBe(after)
   })
 

@@ -1,6 +1,6 @@
 {
   "name": "plague-tracker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Plague outbreak threat level from the plague tracker, in a band above the prompt, a pane or the status line",
   "author": {
     "name": "fanick1"
@@ -26,8 +26,8 @@
     "refreshMinutes": {
       "type": "number",
       "title": "Refresh interval (minutes)",
-      "description": "How often to refetch while the display is on; the tracker itself polls its sources every 15 minutes",
-      "default": 5
+      "description": "How often to refetch while the display is on",
+      "default": 30
     }
   }
 }

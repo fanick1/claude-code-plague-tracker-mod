@@ -68,7 +68,7 @@ export const register: Register = (on, options) => {
   const cfg: Config = {
     base: String(options.baseUrl || DEFAULT_URL).replace(/\/+$/, ''),
     display: options.display === 'status' ? 'status' : 'band',
-    refreshMs: Math.max(1, Number(options.refreshMinutes) || 5) * 60_000,
+    refreshMs: Math.max(1, Number(options.refreshMinutes) || 30) * 60_000,
   }
   const { display, refreshMs } = cfg
 
