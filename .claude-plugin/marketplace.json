@@ -1,0 +1,6 @@
+{
+  "name": "plague-tracker",
+  "description": "Plague outbreak threat level inside Claude Code",
+  "owner": { "name": "fanick1" },
+  "plugins": [{ "name": "plague-tracker", "source": "./" }]
+}
