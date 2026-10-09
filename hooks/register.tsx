@@ -5,7 +5,7 @@ import type { PlagueSummary } from '../types'
 import { bandColor, bar, commandText, fromSignals, fromSummary, sparkline, statusLine, trendText } from './summary'
 
 const PANE = 'plague-tracker'
-const DEFAULT_URL = 'https://plague-tracker-theta.vercel.app'
+const TRACKER_URL = 'https://plague-tracker-theta.vercel.app'
 const USAGE = 'Usage: `/plague-tracker` shows the current threat level; `on` / `off` toggle the permanent display; `pane` opens the detail pane.'
 
 const summary = atom({ plugin: 'plague-tracker', key: 'summary' } as const, null)
@@ -66,7 +66,7 @@ async function setOn($: EngineInterface, value: boolean) {
 
 export const register: Register = (on, options) => {
   const cfg: Config = {
-    base: String(options.baseUrl || DEFAULT_URL).replace(/\/+$/, ''),
+    base: TRACKER_URL,
     display: options.display === 'status' ? 'status' : 'band',
     refreshMs: Math.max(1, Number(options.refreshMinutes) || 30) * 60_000,
   }
@@ -78,8 +78,9 @@ export const register: Register = (on, options) => {
       description: 'Plague outbreak threat level (on|off: permanent display, pane: details)',
       argumentHint: '[on|off|pane]',
     })
-    // The on/off choice outlives the session; values in $.state survive a hot reload anyway.
-    if ((await $.store.get('isOn')) === true) {
+    // On unless the person turned it off: a fresh install shows the band right away.
+    // The choice outlives the session; values in $.state survive a hot reload anyway.
+    if ((await $.store.get('isOn')) !== false) {
       await update($, isOn, () => true)
       void refresh($, cfg)
       startPolling($, cfg)

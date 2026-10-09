@@ -37,7 +37,8 @@ const BAND = {
 } as const
 
 /** The world beneath the plugin: an in-memory store and clock, the tracker's HTTP API, and the ui calls it makes. */
-function world(on: On, routes: Record<string, unknown>, store: Record<string, unknown> = {}) {
+// Defaults to a person who turned the display off, so each test starts quiet unless it says otherwise.
+function world(on: On, routes: Record<string, unknown>, store: Record<string, unknown> = { isOn: false }) {
   const calls = { fetched: [] as string[], status: [] as (string | undefined)[], opened: [] as string[], closed: [] as string[] }
   const stored: Record<string, unknown> = { ...store }
   on('store.get', ($, e) => ({ value: stored[e.key] }))
@@ -182,6 +183,14 @@ describe('/plague-tracker', () => {
     expect(calls.status.at(-1)).toMatch(/^☣ plague 57\.8 high ▲ \+2\.7\/24h [▁-█]+$/)
     await run($, 'off')
     expect(calls.status.at(-1)).toBeUndefined()
+  })
+
+  test('is on by default after install', async ($, on) => {
+    const { calls } = world(on, { '/api/summary': SUMMARY }, {})
+    await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
+    const band = await $.ui.mount({ plugin: 'plague-tracker', surface: 'terminal', ...BAND })
+    expect((await band.find({ text: /Plague threat/ }))?.text).toContain('57.8/100 high')
+    expect(calls.fetched).toEqual([`${BASE}/api/summary`])
   })
 
   test('the on state outlives the session', async ($, on) => {

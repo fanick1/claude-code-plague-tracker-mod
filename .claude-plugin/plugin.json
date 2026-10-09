@@ -1,18 +1,12 @@
 {
   "name": "plague-tracker",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Plague outbreak threat level from the plague tracker, in a band above the prompt, a pane or the status line",
   "author": {
     "name": "fanick1"
   },
   "types": "./types/index.d.ts",
   "userConfig": {
-    "baseUrl": {
-      "type": "string",
-      "title": "Tracker URL",
-      "description": "Base URL of the plague tracker deployment",
-      "default": "https://plague-tracker-theta.vercel.app"
-    },
     "display": {
       "type": "string",
       "title": "Display",
